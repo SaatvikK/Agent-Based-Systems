@@ -1,0 +1,146 @@
+
+2026-03-08 14:50:43.350201;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:50:43.350201;1;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;2;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;3;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;4;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;5;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;6;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;7;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;8;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;9;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;10;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;11;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;12;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;13;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;14;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;15;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;16;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;17;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;18;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;19;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;20;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;21;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;22;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;23;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;24;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;25;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;26;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:50:43.350201;27;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;28;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;29;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;30;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;31;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;32;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;33;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;34;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;35;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;36;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;37;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;38;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;39;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;40;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;41;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;42;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;43;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;44;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;45;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;46;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;47;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;48;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;49;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:50:43.350201;50;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:57:09.656928;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:57:09.656928;1;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;2;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;3;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;4;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;5;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;6;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;7;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:09.656928;8;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:57:44.978422;1;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;2;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;3;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;4;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;5;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;6;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:57:44.978422;7;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:18.991474;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:58:18.991474;1;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:18.991474;2;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:18.991474;3;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:58:30.667277;1;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;2;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;3;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;4;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;5;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:30.667277;6;1234321-1;bidding;invalid literal for int() with base 10: 'random_bot-3'
+2026-03-08 14:58:53.133393;0;1234321-1;bidding;attempt to get argmax of an empty sequence
+2026-03-08 14:58:53.133393;1;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:58:53.133393;2;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:58:53.133393;3;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 14:58:53.133393;4;1234321-1;bidding;invalid literal for int() with base 10: 'flat_bot_10-2'
+2026-03-08 15:02:13.589682;0;1234321-1;bidding;list index out of range
+2026-03-08 15:02:24.348972;0;1234321-1;bidding;list index out of range
+2026-03-08 15:24:36.496450;0;1234321-1;bidding;list index out of range
+2026-03-08 15:30:40.792796;0;1234321-1;bidding;list index out of range
+2026-03-08 15:30:40.792796;1;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;2;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;3;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;4;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;5;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;6;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;7;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;8;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;9;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;10;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;11;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;12;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;13;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;14;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;15;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;16;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;17;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;18;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;19;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;20;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;21;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;22;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;23;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:30:40.792796;24;1234321-1;bidding;cannot access local variable 'aveamounts' where it is not associated with a value
+2026-03-08 15:31:20.949874;0;1234321-1;bidding;list index out of range
+2026-03-08 15:36:29.658946;5;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:36:29.658946;6;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:36:29.658946;7;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:36:29.658946;10;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:07.385023;3;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:07.385023;4;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:07.385023;6;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:07.385023;7;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:34.634942;4;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-08 15:37:34.634942;6;1234321-1;bidding;'float' object cannot be interpreted as an integer
+2026-03-11 22:21:32.896904;0;1234321-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-11 22:21:32.896904;1;1234321-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-11 22:21:32.896904;2;1234321-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-11 23:39:10.730371;0;5714960-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-11 23:39:10.730371;1;5714960-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-11 23:39:10.730371;2;5714960-1;bidding;int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+2026-03-12 09:44:50.374626;0;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:44:50.374626;1;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:44:50.374626;2;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:44:50.374626;3;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:44:50.374626;4;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:44:50.374626;5;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:46:45.695699;0;5714960-1;bidding;'list' object has no attribute 'keys'
+2026-03-12 09:46:45.695699;1;5714960-1;bidding;'list' object has no attribute 'keys'
+2026-03-12 09:46:45.695699;2;5714960-1;bidding;'list' object has no attribute 'keys'
+2026-03-12 09:46:45.695699;3;5714960-1;bidding;'list' object has no attribute 'keys'
+2026-03-12 09:46:45.695699;4;5714960-1;bidding;'list' object has no attribute 'keys'
+2026-03-12 09:47:06.991997;0;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:47:06.991997;1;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:47:06.991997;2;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 09:47:06.991997;3;5714960-1;bidding;KnowledgeBase.computeBid() missing 1 required positional argument: 'bayes'
+2026-03-12 11:06:51.453620;0;5714960-1;bidding;list index out of range
