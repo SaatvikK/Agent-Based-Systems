@@ -3,6 +3,8 @@ import numpy as np
 import collections as coll
 from dataclasses import *
 import scipy 
+from bots import qlearning as ql
+import os
 
 N0 = int  # ℕ₀ = {0, 1, 2, ...}
 Z = int   # ℤ
@@ -14,7 +16,18 @@ class KnowledgeBase:
   sigma_r : list # list of winning bids
   sigma_p : list # list of paintings
   sigma_w : list # list of winners
+  rT      : N0
+  totalb  : N0
+  qler    : ql.QLearner
 
+  # PROBLEM: When running the lots of auctions method in arena.py, the auctioneer, for each auction, performs a deep copy of the bot.
+  # This deep copy cascades to every class that the bot class uses, including KnowledgeBase, BayesianModel, and QLearner, and then to
+  # Every object and variable *those* classes use and call.
+  # This is unproblematic for *one* auction, however it becomes a big issue for many auctions, resulting in a recusion depth exceeded error.
+  # As such, we overright copy.deepcopy() using __deepcopy__ for each class we wrote, which simply returns the object itself.
+  def __deepcopy__(self, memo):
+    return self
+  
   def paintings(self, b: Bsp, p: Psp) -> N0:
     return b["paintings"].get(p, 0)
 
@@ -24,30 +37,46 @@ class KnowledgeBase:
   def sale(self, r: N0) -> Psp:
     return self.sigma_p[r]
   
-  def bid(self, s: Bsp, r: N0, rT: N0, bayes) -> N0:
+  def bid(self, s: Bsp, r: N0, bayes, training = True) -> N0:
     # apply rule 3: pacing constraint
-    pacingb = self.budget(s) / (5 * max(1, rT - r))
+    pacingb = self.budget(s) / (max(1, self.rT - r))
 
     # apply rule 2 first as it matters regardless of rule 1:
     upperb = self.budget(s) * 1/(self.paintings(s, self.sale(r)) + 1)
 
     # out of rules 2 and 3 (both are upper bounds) only take the tighter one
-    #upperb = min(pacingb, upperb)
+    upperb = min(pacingb*2, upperb)
 
     # apply rule 1:
     paint0 = [ x for x in ["Picasso", "Van Gogh", "Rembrandt", "Da Vinci"] if self.paintings(s, x) == 0 ]
-    bid = self.computeBid(s, bayes)
+    bid = self.computeBid(bayes, s, training = training)
     if self.sale(r) in paint0:
       return min(upperb, max(1, bid)) # ensure 0 < (rule 1) bid <= upper bound (rule 2).
     
     return min(upperb, bid) # ensure bid <= upper bound (rule 2)
 
-  def computeBid(self, s: Bsp, bayes):
+  def computeBid(self, bayes, s, training = True):
     if len(self.sigma_r) > 0:
       m_i = self.sigma_r[-1]
       i_won = self.sigma_w[-1] == s["bot_unique_id"]
       bayes.update(m_i, i_won)
-    return min(bayes.predWinningBid(confidence=0.5), self.budget(s))
+    bayesbid = min(bayes.predWinningBid(confidence=0.5), self.budget(s))
+    return self.qlearn(bayesbid, s, training = training)
+  
+  def qlearn(self, bayesbid, s, training = True):
+    if len(self.sigma_w) == 0:
+      return self.qler.selectAction(bayesbid, self.budget(s))
+    
+    painter = None
+    if self.sigma_w[-1].startswith("5714960"):
+          painter = self.sigma_p[len(self.sigma_w) - 1]
+    
+    budgetbin = self.qler.budgetbinner(self.budget(s), self.totalb)
+    self.qler.transition(painter, budgetbin)
+    if training: self.qler.bellmans()
+    return self.qler.selectAction(bayesbid, self.budget(s)) # set threshold = 0 for not training.
+
+
 
 class BayesianModel:
   def __init__(self, nOpponents, budget=1001):
@@ -61,6 +90,14 @@ class BayesianModel:
     
     # Fixed assumed variance
     self.sigma = 50
+
+  # PROBLEM: When running the lots of auctions method in arena.py, the auctioneer, for each auction, performs a deep copy of the bot.
+  # This deep copy cascades to every class that the bot class uses, including KnowledgeBase, BayesianModel, and QLearner, and then to
+  # Every object and variable *those* classes use and call.
+  # This is unproblematic for *one* auction, however it becomes a big issue for many auctions, resulting in a recusion depth exceeded error.
+  # As such, we overright copy.deepcopy() using __deepcopy__ for each class we wrote, which simply returns the object itself.
+  def __deepcopy__(self, memo):
+    return self
 
   def likelihood(self, m_i, theta, i_won): # m_i is a single winning bid for round i
     """P(m_i | θ) for a single round"""
@@ -110,8 +147,11 @@ class Bot(object):
         "5714960"  # Put your id number her. String or integer will both work
     )
     # Add your own variables here, if you want to.
+    self.TRAININGQLEARN = True
+    self.KB = KnowledgeBase([], [], [], 0, 0, ql.QLearner(lr = 0.8, discfactor = 0.95, epochs = 1000))
 
-    self.KB = KnowledgeBase([], [], [])
+    if not self.TRAININGQLEARN: self.KB.qler.loadQtable("data/qtable.json")
+
     self.bayes = BayesianModel(0, 0)
 
   def get_bid(
@@ -163,13 +203,14 @@ class Bot(object):
     self.KB.sigma_r = amounts_paid
     self.KB.sigma_p = painting_order
     self.KB.sigma_w = winner_ids
-
+    self.rT = round_limit
     s = my_bot_details
     r, rT = current_round, round_limit
+    if r == 0: self.KB.totalb = s["budget"]
 
     self.bayes.budget = s["budget"]
     self.bayes.nOpponents = len(bots) - 1
     
     #print(s["paintings"])
 
-    return self.KB.bid(s, r, rT, self.bayes)
+    return self.KB.bid(s, r, self.bayes, training = self.TRAININGQLEARN)
