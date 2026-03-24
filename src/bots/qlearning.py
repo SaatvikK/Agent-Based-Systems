@@ -1,7 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import json
 import random as rand
+import math
 
 class QLearner:
   def __init__(self, lr = 0.8, discfactor = 0.95, epochs = 1000):
@@ -34,9 +34,17 @@ class QLearner:
     elif budget <= 0: return "empty"
   
   @staticmethod
-  def scoreFunc(current, previous):
-    score = lambda s: s[0] * s[1] * s[2] * s[3]
-    return score(current) - score(previous)
+  def scoreFunc(current, previous, spent):
+    # Use log-sum instead of product to avoid zero problem
+    # log(product) = sum(log), but handle zeros
+    
+    def value(s):
+        return sum(math.log(c + 1) for c in s[:4])
+    
+    delta = value(current) - value(previous)
+    if spent > 0:
+        return delta / spent  # reward efficiency
+    return 0
 
   @staticmethod
   def bin(budget, bid):
@@ -47,13 +55,21 @@ class QLearner:
     else:
       fraction = 0
 
-      # Snap to nearest bin
-      idx = np.argmin([abs(fraction - b) for b in bidAmounts])
+    # Snap to nearest bin
+    idx = np.argmin([abs(fraction - b) for b in bidAmounts])
     
     return idx
   
-  def selectAction(self, bayesianBid, budget,  alpha = 0.7):
+  def selectAction(self, bayesianBid, budget,  gamma = 0.7, epsilon = 0.1):
     bidAmounts = [0, 0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8, 1.0]
+
+    # We introduce randomness during TRAINING ONLY (for testing set epsilon = 0).
+    # This means, sometimes, the Q-Learning algorithm will explore a random action (bid) and determine the value,
+    # providing the bot with more experience and exploration of state,action pairs that it may not have explored previously.
+    if np.random.random() < epsilon:
+      bididx = rand.randint(0, len(bidAmounts) - 1)
+      self.lastBid = bididx
+      return bidAmounts[bididx]*budget
     
     # Convert raw bid to fraction of budget
     # Under the assumption that maybe the bayesian bid will always be the same, we introduce randomness via a threshold value.
@@ -62,15 +78,14 @@ class QLearner:
 
     # Snap to nearest bin
     idxBayes = QLearner.bin(budget, bayesianBid)
-    
+
     # then get the bid from the qtable:
     idxQ = np.argmax(self.getQ(self.state))
 
     # average the two bidding candidates, modified by gamma: 0 indicates a bayesian bid only, 1 indicates a Q bid
     Qbid, Bbid = bidAmounts[idxQ]*budget, bidAmounts[idxBayes]*budget
-    bidd = alpha*Qbid + (1-alpha)*Bbid
-    idxFinal = rand.choice([idxBayes, idxQ])
-    bidd = bidAmounts[idxFinal] * budget
+    #print(Qbid, Bbid, bayesianBid)
+    bidd = gamma*Qbid + (1-gamma)*Bbid
 
     # Snap averaged value back into bin
     self.lastBid = QLearner.bin(budget, bidd)
@@ -85,7 +100,7 @@ class QLearner:
   def transition(self, painterWon, budgetbin):
     # for many iterations, the state space with uncapped number of paintings gets incredibly large.
     # If the number of paintings owned exceeds the cap, the state[i] will be set to the cap.
-    cap = 5 
+    cap = 5
 
     self.lastState = self.state.copy()
     match(painterWon):
@@ -98,13 +113,13 @@ class QLearner:
     self.state[4] = budgetbin
     return self.state
   
-  def bellmans(self):
-    reward = QLearner.scoreFunc(self.state, self.lastState)
+  def bellmans(self, spent):
+    reward = QLearner.scoreFunc(self.state, self.lastState, spent)
     futureQ = np.max(self.getQ(self.state))
     oldQ = self.getQ(self.lastState)[self.lastBid]
     
     Qnew = (1 - self.lr) * oldQ + self.lr * (reward + self.discfactor * futureQ)
-    
+    #print(oldQ, futureQ, Qnew)
     self.getQ(self.lastState)[self.lastBid] = Qnew
 
   def saveQtable(self, path="qtable.json"):

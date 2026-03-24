@@ -11,16 +11,19 @@ from bots import flat_bot_10
 from bots import random_bot
 from bots import u1234321
 from bots import claude
+from bots import claude2
+from bots import rohan
 
 def run_basic_auction():
 	"""
 	An example function that runs a basic auction with 3 bots
 	"""
 	# Setup a room of bots to play against each other, imported above from the bots folder
-	room = [u1234321, flat_bot_10, random_bot, claude]
+	room = [u1234321, claude2, claude, flat_bot_10]
 	#room = [u1234321, random_bot, claude]
+	room = [u1234321, rohan, claude2]
 	# Setup the auction
-	my_auction = Auctioneer(room=room)
+	my_auction = Auctioneer(room=room, verbose = True)
 	# Play the auction
 	my_auction.run_auction()
 
@@ -39,7 +42,7 @@ def run_lots_of_auctions():
 	for i in range(run_count):
 		# Setup the auction
 		# slowdown = 0 makes it fast
-		my_auction = Auctioneer(room=room, slowdown=1)
+		my_auction = Auctioneer(room=room, slowdown=1, verbose = False)
 		# run_auction() returns a list of winners, sometimes there are more than one winner if there is a tie
 		winners = my_auction.run_auction()
 		# Check if the bot's name, "my_bot", was a winner 
@@ -49,13 +52,13 @@ def run_lots_of_auctions():
 
 # modified by claude opus 4.6
 def modified_run_lots_of_auctions():
-	room = [u1234321, random_bot, claude, random_bot]
+	room = [u1234321, claude, claude, rohan]
 	
 	# Persistent Q-table across all games
 	qler = u1234321.ql.QLearner()
 	
 	win_count = 0
-	run_count = 2000
+	run_count = 100
 	
 	for i in range(run_count):
 			my_auction = Auctioneer(room=room, slowdown=0, verbose=False)
@@ -84,6 +87,6 @@ def modified_run_lots_of_auctions():
 	print(f"Training complete. Won {win_count}/{run_count}")
 
 
-if __name__=="__main__":
-	modified_run_lots_of_auctions()
-	#run_basic_auction()
+if __name__== "__main__":
+	#modified_run_lots_of_auctions()
+	run_basic_auction()

@@ -1,1 +1,3 @@
 venv
+data/auctioneer_log.csv
+data/error_log.csv
