@@ -5,6 +5,7 @@ from dataclasses import *
 import scipy 
 from bots import qlearning as ql
 import os
+import math
 
 N0 = int  # ℕ₀ = {0, 1, 2, ...}
 Z = int   # ℤ
@@ -15,7 +16,7 @@ Bsp = dict # Bot space B
 # confident is how confident the bayesian bid should be
 # learning rate and discount factors are for Q Learning
 # Do gamma closer to 1 for testing (as the q table has been optimised at that point), else do closer to 0.
-hyperparams = {"gamma": 0.3, "confidence": 0.5, "discfactor": 0.8, "lr": 0.8, "epsilon": 0.1}
+hyperparams = {"gamma": 1, "confidence": 0.6, "discfactor": 0.95, "lr": 0.4, "epsilon": lambda episode: max(0.05, 0.5 - (episode / 5000) * 0.45)}
 
 @dataclass
 class KnowledgeBase:
@@ -24,6 +25,7 @@ class KnowledgeBase:
   sigma_w : list # list of winners
   rT      : N0
   totalb  : N0
+  currentAuction : N0
   qler    : ql.QLearner
 
   # PROBLEM: When running the lots of auctions method in arena.py, the auctioneer, for each auction, performs a deep copy of the bot.
@@ -48,25 +50,38 @@ class KnowledgeBase:
   
   def bid(self, s: Bsp, r: N0, bayes, training = True) -> N0:
     # apply rule 3: pacing constraint
+
     # Compute the number of times this painter will be up for auctioning in this auction's leftover rounds.
     Np = len([ p for p in self.sigma_p[r:] if p == self.sale(r) ])
 
     # Pace our bidding based on how many more times we'll see this painter again AND how many paintings of this painter we already own.
-    pacingb = self.budget(s) / ((max(1, Np)) * max(1, self.paintings(s, self.sale(r))))
+    pacingb = (self.budget(s) / (max(1, Np) * max(1, self.paintings(s, self.sale(r)))))*8
 
     # apply rule 2 first as it matters regardless of rule 1:
-    upperb = self.budget(s) * 1/(self.paintings(s, self.sale(r)) + 1)
+    upperborg = self.budget(s) * 1/(self.paintings(s, self.sale(r)) + 1)
     
     # out of rules 2 and 3 (both are upper bounds) only take the tighter one
-    upperb = min(pacingb*2, upperb)
-
+    upperb = np.inf if training == True else math.ceil(min(pacingb, upperborg))
+    
     # apply rule 1:
     paint0 = [ x for x in ["Picasso", "Van Gogh", "Rembrandt", "Da Vinci"] if self.paintings(s, x) == 0 ]
     bid = self.computeBid(bayes, s, training = training)
-
-    if self.sale(r) in paint0:
-      return min(upperb, max(1, bid)) # ensure 0 < (rule 1) bid <= upper bound (rule 2).
     
+    # if r == 1 or r == 199 or r == 100:
+    #   print(" ")
+    #   print(f"======= DIAGNOSTIC: ROUND {r} =======")
+    #   #print(f"upper bound = {upperborg}")
+    #   #print(f"pacing bound = {pacingb}")
+    #   print(f"budget = {self.budget(s)}")
+    #   print(f"computed bid = {bid}, bidded bid = {math.ceil(min(upperb, bid))}")
+    #   print(f"WINNER OF LAST ROUND = {self.sigma_w[-1]}")
+    #   print(" ")
+    #   print(f"=====================================")
+    #   print(" ")
+    #print(f"{r}, {bid}")
+    if self.sale(r) in paint0:
+      return min(upperb, max(11, bid)) # ensure 0 < (rule 1) bid <= upper bound (rule 2).
+  
     return min(upperb, bid) # ensure bid <= upper bound (rule 2)
 
   def computeBid(self, bayes, s, training = True):
@@ -75,24 +90,24 @@ class KnowledgeBase:
       i_won = self.sigma_w[-1] == s["bot_unique_id"]
       bayes.update(m_i, i_won)
     bayesbid = min(bayes.predWinningBid(confidence=hyperparams["confidence"]), self.budget(s))
-
+    #return bayesbid
     return self.qlearn(bayesbid, s, training = training)
   
   def qlearn(self, bayesbid, s, training = True):
     if len(self.sigma_w) == 0:
-      return self.qler.selectAction(bayesbid, self.budget(s), gamma = hyperparams["gamma"], epsilon = hyperparams["epsilon"])
+      return self.qler.selectAction(bayesbid, self.budget(s), epsilon = hyperparams["epsilon"], currAuction = self.currentAuction)
     
-    painter, spent = None, 0
+    spent = 0
     # If this bot won last round then determine which painter it won and how much it spent
     if self.sigma_w[-1].startswith("5714960"):
-      painter = self.sigma_p[len(self.sigma_w) - 1]
       spent = self.sigma_r[len(self.sigma_w) - 1]
     
     budgetbin = self.qler.budgetbinner(self.budget(s), self.totalb)
+    paintingBin = self.qler.paintingsBinner(s["paintings"], self.qler.paintingsBins)
     if training: 
-      self.qler.transition(painter, budgetbin)
+      self.qler.transition(list(s["paintings"].values()), paintingBin, budgetbin)
       self.qler.bellmans(spent)
-    return self.qler.selectAction(bayesbid, self.budget(s), gamma = hyperparams["gamma"], epsilon = hyperparams["epsilon"])
+    return self.qler.selectAction(bayesbid, self.budget(s), epsilon = hyperparams["epsilon"], currAuction = self.currentAuction)
 
 
 
@@ -107,7 +122,7 @@ class BayesianModel:
     self.posterior = np.ones(len(self.thetaVals)) / len(self.thetaVals)
     
     # Fixed assumed variance
-    self.sigma = 50
+    self.sigma = 10
 
   # PROBLEM: When running the lots of auctions method in arena.py, the auctioneer, for each auction, performs a deep copy of the bot.
   # This deep copy cascades to every class that the bot class uses, including KnowledgeBase, BayesianModel, and QLearner, and then to
@@ -164,8 +179,8 @@ class Bot(object):
         "5714960"  # Put your id number her. String or integer will both work
     )
     # Add your own variables here, if you want to.
-    self.TRAININGQLEARN = False
-    self.KB = KnowledgeBase([], [], [], 0, 0, ql.QLearner(lr = hyperparams["lr"], discfactor = hyperparams["discfactor"], epochs = 1000))
+    self.TRAININGQLEARN = True
+    self.KB = KnowledgeBase([], [], [], 0, 0, 0, ql.QLearner(lr = hyperparams["lr"], discfactor = hyperparams["discfactor"], epochs = 1000))
 
     if not self.TRAININGQLEARN: self.KB.qler.loadQtable("data/qtable.json")
 
@@ -215,9 +230,6 @@ class Bot(object):
     Returns:
     int:Your bid. Return your bid for this round.
     """
-    #for bot in bots:
-    #  print(f"    {bot["bot_name"]}::: {bot["paintings"]}")
-
     # WRITE YOUR STRATEGY HERE FOR COLLECTION TYPE GAMES - FIRST TO COMPLETE A FULL COLLECTION
     self.KB.sigma_r = amounts_paid
     self.KB.sigma_p = painting_order
@@ -225,14 +237,19 @@ class Bot(object):
     self.rT = round_limit
     s = my_bot_details
     r, rT = current_round, round_limit
-    if r == 0: self.KB.totalb = s["budget"]
 
     self.bayes.budget = s["budget"]
     self.bayes.nOpponents = len(bots) - 1
     
-    #print(s["paintings"])
+    # Reset at the start of each auction
+    if r == 0: 
+      self.KB.currentAuction += 1
+      self.KB.totalb = s["budget"]
+      self.KB.qler.lr = hyperparams["lr"]
+      self.KB.qler.discfactor = hyperparams["discfactor"]
+      self.bayes = BayesianModel(len(bots) - 1, s["budget"])
+
+      return 11
 
     bid = self.KB.bid(s, r, self.bayes, training=self.TRAININGQLEARN)
-    #if r < 20:
-    #    print(f"Round {r}: bid={bid}, budget={s['budget']}, painting={current_painting}, paintings={s['paintings']}")
     return bid

@@ -21,11 +21,11 @@ def run_basic_auction():
 	# Setup a room of bots to play against each other, imported above from the bots folder
 	room = [u1234321, claude2, claude, flat_bot_10]
 	#room = [u1234321, random_bot, claude]
-	room = [u1234321, rohan, claude2]
+	#room = [u1234321, rohan, claude2]
 	# Setup the auction
-	my_auction = Auctioneer(room=room, verbose = True)
+	my_auction = Auctioneer(room=room, slowdown = 0, verbose = True)
 	# Play the auction
-	my_auction.run_auction()
+	return my_auction.run_auction()
 
 
 def run_lots_of_auctions():
@@ -50,15 +50,14 @@ def run_lots_of_auctions():
 			win_count +=1
 	print("My bot won {} of {} games".format(win_count, run_count))	
 
-# modified by claude opus 4.6
-def modified_run_lots_of_auctions():
-	room = [u1234321, claude, claude, rohan]
-	
+# modified run lots of auctions for training by claude opus 4.6
+def train(epochs = 1000):
+	room = [u1234321, rohan, claude, flat_bot_10]
 	# Persistent Q-table across all games
 	qler = u1234321.ql.QLearner()
 	
 	win_count = 0
-	run_count = 100
+	run_count = epochs
 	
 	for i in range(run_count):
 			my_auction = Auctioneer(room=room, slowdown=0, verbose=False)
@@ -78,6 +77,10 @@ def modified_run_lots_of_auctions():
 			
 			if i % 5 == 0:
 					print(f"Episode {i}, wins: {win_count}, Q-table size: {len(qler.Qtable)}")
+			path = os.path.join(
+					os.path.dirname(__file__), "data/qtable.json"
+			)
+			qler.saveQtable(path)
 	
 	# Save after training
 	path = os.path.join(
@@ -87,6 +90,16 @@ def modified_run_lots_of_auctions():
 	print(f"Training complete. Won {win_count}/{run_count}")
 
 
+def test(epochs = 500):
+	wins = 0
+	for i in range(epochs):
+		winners = run_basic_auction()
+		if "5714960" in winners:
+			wins += 1		
+	return wins/epochs
+
 if __name__== "__main__":
-	#modified_run_lots_of_auctions()
-	run_basic_auction()
+	#train(epochs = 5000)
+	#run_basic_auction()
+	testepochs = 50
+	print(f"Bot win rate after {testepochs} auctions = {test(testepochs)}")
