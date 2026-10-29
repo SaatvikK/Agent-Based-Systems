@@ -14,8 +14,7 @@ run_auction returns a list of the winners, with the name of the winning bots, fo
 The arena file has some example functions that show how to run auctions with different bots and different variables. 
 
 ## auctioneer.py
-DO NOT CHANGE THE CODE IN THE AUCTIONEER. THIS IS THE EXACT FILE WE WILL USE TO MARK YOUR BOT
-IF YOU CHANGE SOMETHING IN THE AUCTIONEER FILE THEN YOUR BOT MIGHT NOT RUN PROPERLY WHEN WE MARK IT 
+DO NOT CHANGE THE CODE IN THE AUCTIONEER. This file was provided by the Department and the coursework will be marked using it.
 
 You DO NOT need to understand how the auctioneer works to complete this coursework and do well. 
 But it always helps to understand software that you are using. 
