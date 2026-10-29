@@ -1,5 +1,19 @@
-# Bot World
+# Agent-Based Systems Coursework (CS924)
 
+All bots can be found under `/src/bots/`. 
+
+My own developed bot for this game is `/src/bots/u5714960.py` -- all other bots were made as follows:
+- `flat_bot_10.py` -- supplied by the department.
+- `random_bot.py` -- supplied by the department.
+- `self_bot.py` -- supplied by the department.
+- All other bots were made by Claude Opus 4.8/5 for the purposes of testing my bot against real adversaries.
+
+*Note: `qlearning.py` was a bot developed by me when I wanted to test Q-Learning on its own.*
+
+
+
+Below are the rubric and guidelines given by the Department:
+-------
 ## arena.py
 Here you can run auctions with different bots and see the results. 
 
@@ -14,13 +28,13 @@ run_auction returns a list of the winners, with the name of the winning bots, fo
 The arena file has some example functions that show how to run auctions with different bots and different variables. 
 
 ## auctioneer.py
-DO NOT CHANGE THE CODE IN THE AUCTIONEER. This file was provided by the Department and the coursework will be marked using it.
-
-You DO NOT need to understand how the auctioneer works to complete this coursework and do well. 
-But it always helps to understand software that you are using. 
-
-The auctioneer runs the auctions.
-Each auction consists of 200 rounds, with one painting auctioned each round.
+> DO NOT CHANGE THE CODE IN THE AUCTIONEER. This file was provided by the Department and the coursework will be marked using it.
+> 
+> You DO NOT need to understand how the auctioneer works to complete this coursework and do well. 
+> But it always helps to understand software that you are using. 
+> 
+> The auctioneer runs the auctions.
+> Each auction consists of 200 rounds, with one painting auctioned each round.
 
 ### How to Use
 There is some code at the bottom of auctioneer.py that runs an auction for you. You can run that by running auctioneer.py from terminal
