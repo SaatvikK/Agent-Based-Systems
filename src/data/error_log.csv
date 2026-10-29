@@ -1,0 +1,4 @@
+2026-03-29 19:42:56.617569;0;5714960;initialisation;'str' object has no attribute 'Bot'
+2026-03-29 21:55:50.485548;0;1234321;initialisation;'int' object has no attribute 'Bot'
+2026-03-30 00:55:49.120831;0;<module 'random' from '/usr/lib/python3.12/random.py'>;initialisation;module 'random' has no attribute 'Bot'
+2026-03-30 09:17:05.902408;0;<module 'bots.u1234321' from '/home/saatvik/masters/agents/src/bots/u1234321.py'>;initialisation;KnowledgeBase.__init__() got an unexpected keyword argument 'epochs'

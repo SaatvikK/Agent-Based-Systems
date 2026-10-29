@@ -8,8 +8,8 @@ class QLearner:
   def __init__(self, lr = 0.8, discfactor = 0.95, epochs = 1000):
     self.lr, self.discfactor, self.epochs = lr, discfactor, epochs
    ### self.actions = [0, 0.01, 0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 1.0] # THIS IS FOR QLEARNING-BAYESIAN HYBRID BIDDING!
-    self.actions = [-1.25, -1, -0.75, 0, 0.75, 1.0, 1.25] # THIS IS FOR QLEARNING-BAYESIAN SCALING!
-    #self.actions = [0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.75]
+    #self.actions = [-1.25, -1, -0.75, 0, 0.75, 1.0, 1.25] # THIS IS FOR QLEARNING-BAYESIAN SCALING!
+    self.actions = [0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.75]
     self.nActions = len(self.actions)
     
     # 0 = gap = the bot owns 0 of one or more painters, resulting in a 0 score at the end

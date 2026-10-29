@@ -178,7 +178,11 @@ class Auctioneer(object):
     ##########################################
 
     def run_auction(self):
+        patience100 = 0
         while not self.finished:
+            # if self.current_round >= self.round_limit//2:
+            #     bot = [ b for b in range(len(self.bots)) if self.bots[b]["bot_name"] == "5714960" ][0]
+            #     patience100 = self.bots[bot]["budget"]
             # Print an update to the terminal and reset bids
             self.__start_round()
 
@@ -200,7 +204,7 @@ class Auctioneer(object):
             # Slow things down a bit if you want to watch
             time.sleep(self.slowdown)
 
-        return self.__get_winners()
+        return self.__get_winners()#, patience100
 
     def __start_round(self):
         """

@@ -1,0 +1,7 @@
+[claude, gemini, poisonbot]
+[rohan, claude2, random_bot, selfbot]
+[claude, selfbot, poisonbot, gemini]
+[rohan, random_bot]
+[claude2, gemini, selfbot, rohan, poisonbot]
+[claude, claude2, random_bot]
+[rohan, claude, claude2, random_bot, gemini, selfbot, poisonbot] 

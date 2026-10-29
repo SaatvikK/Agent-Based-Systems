@@ -16,7 +16,9 @@ Bsp = dict # Bot space B
 # confident is how confident the bayesian bid should be
 # learning rate and discount factors are for Q Learning
 # Do gamma closer to 1 for testing (as the q table has been optimised at that point), else do closer to 0.
-hyperparams = {"gamma": 1, "confidence": 0.6, "discfactor": 0.95, "lr": 0.4, "epsilon": lambda episode: max(0.05, 0.5 - (episode / 5000) * 0.45)}
+epsilon = lambda episode: 0.5*np.exp(-(episode/3750)+0.05) # decay epsilon for the first 75% of the training
+epsilon = 0
+hyperparams = {"gamma": 1, "confidence": 0.6, "discfactor": 0.95, "lr": 0.4, "window": 20, "epsilon": epsilon} # epsilon is based on a 5000 auction training session
 
 @dataclass
 class KnowledgeBase:
@@ -55,7 +57,7 @@ class KnowledgeBase:
     Np = len([ p for p in self.sigma_p[r:] if p == self.sale(r) ])
 
     # Pace our bidding based on how many more times we'll see this painter again AND how many paintings of this painter we already own.
-    pacingb = (self.budget(s) / (max(1, Np) * max(1, self.paintings(s, self.sale(r)))))*8
+    pacingb = (self.budget(s) / (max(1, Np) * max(1, self.paintings(s, self.sale(r)))))*3
 
     # apply rule 2 first as it matters regardless of rule 1:
     upperborg = self.budget(s) * 1/(self.paintings(s, self.sale(r)) + 1)
@@ -65,32 +67,49 @@ class KnowledgeBase:
     
     # apply rule 1:
     paint0 = [ x for x in ["Picasso", "Van Gogh", "Rembrandt", "Da Vinci"] if self.paintings(s, x) == 0 ]
-    bid = self.computeBid(bayes, s, training = training)
-    
+
+    bid = self.computeBid(bayes, s, training=training)
+
+    finalbid = bid
+    if r < 10:
+      finalbid = 0
+    elif len(self.sigma_r) > 0 and self.sigma_r[-1] <= 11:
+      finalbid = min(upperb, 11)
+    elif self.sale(r) in paint0:
+      finalbid = min(upperb, max(11, bid))
+    else:
+      finalbid = min(upperb, bid)
+
+    # print(f"sigma = {bayes.sigma}")
     # if r == 1 or r == 199 or r == 100:
     #   print(" ")
     #   print(f"======= DIAGNOSTIC: ROUND {r} =======")
-    #   #print(f"upper bound = {upperborg}")
-    #   #print(f"pacing bound = {pacingb}")
+    #   print(f"upper bound = {upperborg}")
+    #   print(f"pacing bound = {pacingb}")
     #   print(f"budget = {self.budget(s)}")
-    #   print(f"computed bid = {bid}, bidded bid = {math.ceil(min(upperb, bid))}")
+    #   #print(f"sigma = {bayes.sigma}")
+    #   print(f"computed bid = {bid}, bidded bid = {finalbid}")
     #   print(f"WINNER OF LAST ROUND = {self.sigma_w[-1]}")
     #   print(" ")
     #   print(f"=====================================")
     #   print(" ")
     #print(f"{r}, {bid}")
-    if self.sale(r) in paint0:
-      return min(upperb, max(11, bid)) # ensure 0 < (rule 1) bid <= upper bound (rule 2).
-  
-    return min(upperb, bid) # ensure bid <= upper bound (rule 2)
+
+    return finalbid
 
   def computeBid(self, bayes, s, training = True):
+    
+    # Don't compute the std on the first round as there's no window of previous winners, std requires at least two data points.
+    # Instead use the default initial value in BayesianModel.__init__().
+    if len(self.sigma_r) > 1: bayes.updateSigma(self.sigma_r, hyperparams["window"])
+
     if len(self.sigma_r) > 0:
       m_i = self.sigma_r[-1]
       i_won = self.sigma_w[-1] == s["bot_unique_id"]
       bayes.update(m_i, i_won)
+
     bayesbid = min(bayes.predWinningBid(confidence=hyperparams["confidence"]), self.budget(s))
-    #return bayesbid
+    return bayesbid
     return self.qlearn(bayesbid, s, training = training)
   
   def qlearn(self, bayesbid, s, training = True):
@@ -123,6 +142,7 @@ class BayesianModel:
     
     # Fixed assumed variance
     self.sigma = 10
+    self.lastSigma = self.sigma
 
   # PROBLEM: When running the lots of auctions method in arena.py, the auctioneer, for each auction, performs a deep copy of the bot.
   # This deep copy cascades to every class that the bot class uses, including KnowledgeBase, BayesianModel, and QLearner, and then to
@@ -171,6 +191,17 @@ class BayesianModel:
     targetQuant = confidence ** (1 / self.nOpponents)
     bid = scipy.stats.norm.ppf(targetQuant, loc=eMu, scale=self.sigma)
     return max(1, int(bid))
+    
+  def updateSigma(self, winningBids, window = 50):
+    if window > len(winningBids):
+      window = len(winningBids)
+    
+    wins = winningBids[len(winningBids)-window:]
+    self.lastSigma = self.sigma
+    self.sigma = np.std(wins)
+    self.sigma = max(1, self.sigma)
+    return self.sigma
+
 
 class Bot(object):
   def __init__(self):
@@ -179,7 +210,7 @@ class Bot(object):
         "5714960"  # Put your id number her. String or integer will both work
     )
     # Add your own variables here, if you want to.
-    self.TRAININGQLEARN = True
+    self.TRAININGQLEARN = False
     self.KB = KnowledgeBase([], [], [], 0, 0, 0, ql.QLearner(lr = hyperparams["lr"], discfactor = hyperparams["discfactor"], epochs = 1000))
 
     if not self.TRAININGQLEARN: self.KB.qler.loadQtable("data/qtable.json")

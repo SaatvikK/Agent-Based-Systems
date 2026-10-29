@@ -131,7 +131,7 @@ class Bot(object):
                 # P(win) = P(b > max opponent bid)
                 # Approximate: P(b > X) where X ~ N(mean, std) for each opponent
                 # P(all opponents below b) = P(one below b)^n
-                z = (b - mean_winning) / std_winning
+                z = max(-50, min(50, (b - mean_winning) / std_winning))
                 # Simple sigmoid approximation of normal CDF
                 p_one = 1.0 / (1.0 + math.exp(-1.7 * z))
                 p_win = p_one ** n_opponents
